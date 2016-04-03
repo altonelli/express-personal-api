@@ -21,8 +21,47 @@
     <div class="container">
       <div class="row">
         <div class="col-md-8 col-md-offset-2">
-          <h1>Under Construction</h1>
+          <h1>My Profile</h1>
           <h4><a href="/api">Read My API Documentation</a></h4>
+          <div id="profileTarget">
+          <script id="profile-info" type="text/x-handlebars-template">
+            {{#each profiles}}
+              <div class="row">
+                <div class="col-xs-6">
+                  <h1><a href="{{github_link}}">{{name}}</a></h1>
+                  <img src="{{github_profile_image}}" class="img-responsive">
+                  <ul>
+                    <li>I live in {{current_city}}.</li>
+                    <li>I am {{age}} years old.</li>
+                    <li>{{description}}</li>
+                    <li>I am awake {{isAwake}}</li>
+                    <li>I am hungry {{isHungry}}</li>
+                  </ul>
+                </div>
+                <div class="col-xs-6">
+                  <h1>Below is a list of my siblings and some details about each of them</h1>
+                  {{#each familyMembers}}
+                  <ul>
+                    <li>{{name}}</li>
+                    <ul>
+                      <li>Relationship: {{relationship}}</li>
+                      <li>Age: {{age}}</li>
+                      <li>Occupation: {{occupation}}</li>
+                      <li>Is awake: {{isAwake}}</li>
+                    </ul>
+                    <ul>
+                      {{/each}}
+                  <h2>Here is a list of my pets</h2>
+                    <ul>
+                      {{#each pets}}
+                      <li>{{name}} is my {{type}} and lives in {{location}}. They are a {{breed}}.</li>
+                      {{/each}}
+                    </ul>
+                </div>
+              </div>
+            {{/each}}
+          </script>
+        </div>
         </div>
       </div>
     </div>
