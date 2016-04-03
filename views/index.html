@@ -37,11 +37,23 @@
                     <li>I am awake {{isAwake}}</li>
                     <li>I am hungry {{isHungry}}</li>
                   </ul>
+                  <h4>Here is a list of a few of my hobbies. Feel free to add a couple of 'todos'!</h4>
+                    {{#each hobbies}}
+                    <li>{{name}}</li>
+                    <ul>
+                      <li>Years active: {{years_active}}</li>
+                      <li>A few of my favorites: {{favorites}}</li>
+                      <li>A few items I still want to do. Feel free to add more below! {{todo}}</li>
+                      <form id="hobbies-{{_id}}" class="form-inline">
+                        <input type="text" class="form-control"></input>
+                        <input type="submit" class="btn btn-primary btn-sm" value="Add!"></input>
+                      </form>
+                    </ul>
+                    {{/each}}
                 </div>
                 <div class="col-xs-6">
-                  <h1>Below is a list of my siblings and some details about each of them</h1>
+                  <h4>Below is a list of my siblings and some details about each of them</h4>
                   {{#each familyMembers}}
-                  <ul>
                     <li>{{name}}</li>
                     <ul>
                       <li>Relationship: {{relationship}}</li>
@@ -49,9 +61,8 @@
                       <li>Occupation: {{occupation}}</li>
                       <li>Is awake: {{isAwake}}</li>
                     </ul>
-                    <ul>
                       {{/each}}
-                  <h2>Here is a list of my pets</h2>
+                  <h4>Here is a list of my pets</h4>
                     <ul>
                       {{#each pets}}
                       <li>{{name}} is my {{type}} and lives in {{location}}. They are a {{breed}}.</li>

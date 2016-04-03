@@ -174,7 +174,7 @@ app.get('/api/profiles/:profile/hobbies/:hobbie', function(req,res){
     });
 });
 
-app.put('/api/profiles/:profile/hobbies/:hobbie', function(req,res){
+app.post('/api/profiles/:profile/hobbies/:hobbie', function(req,res){
   db.Profile.find({ _id: req.params.profile })
     .exec(function(err,profile){
       if(err){
@@ -214,7 +214,7 @@ app.get('/api', function api_index(req, res) {
       {method: "GET", path: "/api/profiles/:profile/pets/:pet", description: "Data on one of my pets"},
       {method: "GET", path: "/api/profiles/:profile/hobbies", description: "Data of all my hobbies"},
       {method: "GET", path: "/api/profiles/:profile/hobbies/:hobbie", description: "Data on one of my hobbies"},
-      {method: "PUT", path: "/api/profiles/:profile/hobbies/:hobbie", description: "Add a 'todo' to one of my hobbies"}
+      {method: "POST", path: "/api/profiles/:profile/hobbies/:hobbie", description: "Add a 'todo' to one of my hobbies"}
     ]
   });
 });

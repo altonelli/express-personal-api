@@ -6,7 +6,6 @@ var mongoose = require('mongoose'),
 
 var HobbieSchema = new Schema({
   name: String,
-  type: String,
   years_active: Number,
   favorites:[String],
   todo: [String]
@@ -23,11 +22,11 @@ var ProfileSchema = new Schema({
   isAwake: Boolean,
   isHungry: Boolean,
   familyMembers: [{
-    type: Schema.Type.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'FamilyMember'
   }],
   pets: [{
-    type: Schema.Type.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Pet'
   }],
   hobbies: [HobbieSchema],

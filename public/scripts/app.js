@@ -35,3 +35,13 @@ function render(){
   var profileHtml = template({ profiles: allProfiles });
   $profileList.append(profileHtml);
 }
+
+function handleSuccess(json){
+  console.log(json);
+  allProfiles = json;
+  render();
+}
+
+function handleError(){
+  console.log("handleError");
+}
