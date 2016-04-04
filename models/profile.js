@@ -3,12 +3,17 @@ var mongoose = require('mongoose'),
   FamilyMember = require('./familyMember.js');
   Pet = require('./pet.js');
 
+var TodoSchema = new Schema({
+  name: String,
+  count: Number
+});
+
 
 var HobbieSchema = new Schema({
   name: String,
   years_active: Number,
   favorites:[String],
-  todo: [String]
+  todo: [TodoSchema]
 });
 
 

@@ -28,7 +28,7 @@
             {{#each profiles}}
               <div class="row">
                 <div class="col-xs-6">
-                  <h1><a href="{{github_link}}">{{name}}</a></h1>
+                  <h1><a href="{{github_link}}">{{name}} <span class="hidden" data-profile="{{_id}}"></span></a></h1>
                   <img src="{{github_profile_image}}" class="img-responsive">
                   <ul>
                     <li>I live in {{current_city}}.</li>
@@ -39,13 +39,21 @@
                   </ul>
                   <h4>Here is a list of a few of my hobbies. Feel free to add a couple of 'todos'!</h4>
                     {{#each hobbies}}
-                    <li>{{name}}</li>
+                    <li>{{name}} <span class="hidden" data-hobbie="{{_id}}"></span></li>
                     <ul>
                       <li>Years active: {{years_active}}</li>
                       <li>A few of my favorites: {{favorites}}</li>
-                      <li>A few items I still want to do. Feel free to add more below! {{todo}}</li>
-                      <form id="hobbies-{{_id}}" class="form-inline">
-                        <input type="text" class="form-control"></input>
+                      <li>A few items I still want to do. Feel free to add more below!
+                        <ul>
+                          {{#each todo}}
+                          <li>{{name}}: {{count}} <button data-count={{_id}} type="button" class="btn btn-xs btn-success upVote"><span class="glyphicon glyphicon-plus"></span></button>
+                                                  <button data-count={{_id}} type="button" class="btn btn-xs btn-danger downVote"><span class="glyphicon glyphicon-minus"></span></button>
+                          </li>
+                          {{/each}}
+                        </ul>
+                      </li>
+                      <form id="addHobbie" class="form-inline" data-hobbie="{{_id}}">
+                        <input type="text" class="form-control" name="hobbie"></input>
                         <input type="submit" class="btn btn-primary btn-sm" value="Add!"></input>
                       </form>
                     </ul>
@@ -59,7 +67,6 @@
                       <li>Relationship: {{relationship}}</li>
                       <li>Age: {{age}}</li>
                       <li>Occupation: {{occupation}}</li>
-                      <li>Is awake: {{isAwake}}</li>
                     </ul>
                       {{/each}}
                   <h4>Here is a list of my pets</h4>

@@ -106,13 +106,23 @@ var hobbieList = [
     name: 'Triathlon',
     years_active: 6,
     favorites:['Escape from Alcatraz', 'Wildflower','MTS'],
-    todo: ['Australia']
+    todo: [
+      {
+      name: 'Australia',
+      count: 1
+      }
+    ]
   },
   {
     name: 'Baking',
     years_active: 3,
     favorites:['Nutelli cookies', 'apple pie'],
-    todo: ['Cheesecake']
+    todo: [
+      {
+      name: 'Cheesecake',
+      count: 1
+      }
+    ]
   },
 ];
 
@@ -149,26 +159,33 @@ var newProfile = {
   current_city: 'Berkeley',
   age: 24,
   description: 'I am  a web develop who love triathlon and baking',
-  isAwake: function(){
-    var hour = parseInt((new Date()).toString().split(" ")[4].slice(0,2));
-    if (hour > 6 && hour < 23){
-      return true;
-    } else {
-      return false;
-    }
-  },
-  isHungry: function(){
-    var hour = parseInt((new Date()).toString().split(" ")[4].slice(0,2));
-    if ((hour > 12 && hour < 13) || (hour > 18 && hour < 19)){
-      return true;
-    } else {
-      return false;
-    }
-  },
+  isAwake: true,
+  isHungry: true,
   familyMembers: [],
   pets: [],
   hobbies: [],
 };
+
+// function(){
+//   var hour = parseInt((new Date()).toString().split(" ")[4].slice(0,2));
+//   if (hour > 6 && hour < 23){
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }
+//
+// function(){
+//   var hour = parseInt((new Date()).toString().split(" ")[4].slice(0,2));
+//   if ((hour > 12 && hour < 13) || (hour > 18 && hour < 19)){
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }
+
+
+
 
 db.Profile.create(newProfile, function(err,profile){
   if(err){
@@ -185,7 +202,7 @@ db.Profile.create(newProfile, function(err,profile){
         });
         console.log(profile.familyMembers);
       }
-      profile.save();
+      // profile.save();
     });
 
 

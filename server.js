@@ -48,6 +48,17 @@ app.get('/api/profiles', function(req,res){
       } else if (!profile) {
         res.json( 400, "Sorry, could not find any profiles.");
       } else {
+        var hour = parseInt((new Date()).toString().split(" ")[4].slice(0,2));
+        if ((hour > 12 && hour < 13) || (hour > 18 && hour < 19)){
+          profile[0].isHungry = true;
+        } else {
+          profile[0].isHungry = false;
+        }
+        if (hour > 6 && hour < 23){
+          profile[0].isAwake = true;
+        } else {
+          profile[0].isAwake = false;
+        }
         res.json(200,profile);
       }
     });
@@ -61,6 +72,17 @@ app.get('/api/profiles/:profile', function(req,res){
       } else if (!profile) {
         res.json( 400, "Sorry, could not find that profile.");
       } else {
+          var hour = parseInt((new Date()).toString().split(" ")[4].slice(0,2));
+          if ((hour > 12 && hour < 13) || (hour > 18 && hour < 19)){
+            profile[0].isHungry = true;
+          } else {
+            profile[0].isHungry = false;
+          }
+          if (hour > 6 && hour < 23){
+            profile[0].isAwake = true;
+          } else {
+            profile[0].isAwake = false;
+          }
         res.json(200,profile);
       }
     });
@@ -139,7 +161,7 @@ app.get('/api/profiles/:profile/pets/:pet', function(req,res){
 });
 
 app.get('/api/profiles/:profile/hobbies', function(req,res){
-  db.Profile.find({ _id: req.params.profile})
+  db.Profile.find({ _id: req.params.profile}).populate('familyMembers').populate('pets')
     .exec(function(err,profile){
       if(err){
         res.json(500, "Error on our end during search.");
@@ -153,7 +175,7 @@ app.get('/api/profiles/:profile/hobbies', function(req,res){
 });
 
 app.get('/api/profiles/:profile/hobbies/:hobbie', function(req,res){
-  db.Profile.find({ _id: req.params.profile })
+  db.Profile.find({ _id: req.params.profile }).populate('familyMembers').populate('pets')
     .exec(function(err,profile){
       if(err){
         res.json(500, "Error on our end during search for profile.");
@@ -175,28 +197,90 @@ app.get('/api/profiles/:profile/hobbies/:hobbie', function(req,res){
 });
 
 app.post('/api/profiles/:profile/hobbies/:hobbie', function(req,res){
-  db.Profile.find({ _id: req.params.profile })
+  // console.log(req.params.profile);
+  // console.log(req.params.hobbie);
+  db.Profile.find({ _id: req.params.profile }).populate('familyMembers').populate('pets')
     .exec(function(err,profile){
       if(err){
         res.json(500, "Error on our end during search for profile.");
       } else if (!profile) {
         res.json( 400, "Sorry, could not find that profile.");
       } else {
-        profile.hobbies.find({ _id: req.params.hobbie})
-        .exec(function(err,hobbie){
-          if(err){
-            res.json(500, "Error on our end during search for hobbies.");
-          } else if (!hobbie) {
-            res.json( 400, "Sorry, could not find that hobbie.");
-          } else {
-            var newTodo = req.body.todo;
-            hobbie.todo.push(newTodo);
-            res.json(200,hobbie);
+        // console.log(profile);
+        // console.log(profile[0].hobbies[0].todo);
+        profile[0].hobbies.forEach(function(el){
+          // console.log(el._id);
+          // console.log(req.params.hobbie);
+          if(el._id.toString() === req.params.hobbie.toString()){
+            // console.log("inif");
+            var newTodo = {
+              name: req.body.hobbie,
+              count: 1
+            };
+            el.todo.push(newTodo);
+            // console.log(newTodo);
           }
         });
+      profile[0].save();
+      var hour = parseInt((new Date()).toString().split(" ")[4].slice(0,2));
+      if ((hour > 12 && hour < 13) || (hour > 18 && hour < 19)){
+        profile[0].isHungry = true;
+      } else {
+        profile[0].isHungry = false;
+      }
+      if (hour > 6 && hour < 23){
+        profile[0].isAwake = true;
+      } else {
+        profile[0].isAwake = false;
+      }
+      res.json(200,profile);
       }
     });
 });
+
+app.put('/api/profiles/:profile/hobbies/:hobbie/todos/:todo', function(req,res){
+  console.log(req.body.count);
+  db.Profile.find({ _id: req.params.profile }).populate('familyMembers').populate('pets')
+    .exec(function(err,profile){
+      if(err){
+        res.json(500, "Error on our end during search for profile.");
+      } else if (!profile) {
+        res.json( 400, "Sorry, could not find that profile.");
+      } else {
+        // console.log(profile);
+        // console.log(profile[0].hobbies[0].todo);
+        profile[0].hobbies.forEach(function(hobbieElement){
+          // console.log(hobbieElement._id);
+          // console.log(req.params.hobbie);
+          if(hobbieElement._id.toString() === req.params.hobbie.toString()){
+            // console.log(hobbieElement.todo);
+            hobbieElement.todo.forEach(function(todoElement){
+              // console.log(todoElement);
+              if(todoElement._id.toString() === req.params.todo.toString()){
+                todoElement.count += parseInt(req.body.count);
+                // console.log(todoElement.count);
+                // console.log(profile);
+              }
+            });
+          }
+        });
+        profile[0].save();
+        var hour = parseInt((new Date()).toString().split(" ")[4].slice(0,2));
+        if ((hour > 12 && hour < 13) || (hour > 18 && hour < 19)){
+          profile[0].isHungry = true;
+        } else {
+          profile[0].isHungry = false;
+        }
+        if (hour > 6 && hour < 23){
+          profile[0].isAwake = true;
+        } else {
+          profile[0].isAwake = false;
+        }
+        res.json(200,profile);
+      }
+    });
+});
+
 
 
 app.get('/api', function api_index(req, res) {
@@ -214,7 +298,8 @@ app.get('/api', function api_index(req, res) {
       {method: "GET", path: "/api/profiles/:profile/pets/:pet", description: "Data on one of my pets"},
       {method: "GET", path: "/api/profiles/:profile/hobbies", description: "Data of all my hobbies"},
       {method: "GET", path: "/api/profiles/:profile/hobbies/:hobbie", description: "Data on one of my hobbies"},
-      {method: "POST", path: "/api/profiles/:profile/hobbies/:hobbie", description: "Add a 'todo' to one of my hobbies"}
+      {method: "POST", path: "/api/profiles/:profile/hobbies/:hobbie", description: "Add a 'todo' to one of my hobbies"},
+      {method: "PUT", path: "/api/profiles/:profile/hobbies/:hobbie/todos/:todo", description: "Up Vote or Down Vote a 'todo' to one of my hobbies"}
     ]
   });
 });

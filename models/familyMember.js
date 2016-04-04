@@ -6,7 +6,6 @@ var FamilyMemberSchema = new Schema({
   relationship: String,
   age: Number,
   occupation: String,
-  isAwake: Boolean
 });
 
 var FamilyMember = mongoose.model('FamilyMember', FamilyMemberSchema);
